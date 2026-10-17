@@ -6,6 +6,7 @@ ort: Alte Halle, Stuttgart
 beginn_kurs: "18:00"
 beginn_konzert: "20:00"
 tanzlehrer: Jana Schaefer
+band: Name der Band
 band_mitglieder:
   - { name: Franziska Kaupp, instrument: Gesang }
   - { name: Carl Krämer, instrument: Saxophon }
