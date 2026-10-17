@@ -1,8 +1,8 @@
 ---
-title: Lindy Hop und Live Musik in der Klosterkirche
+title: Swing in der Klosterkirche
 date: 2027-01-16
-untertitel: Ein Abend mit Tanzkurs und Live-Band.   # optional, sonst Standardsatz
-ort: Alte Halle, Stuttgart
+untertitel: Ein Abend mit Tanzkurs und Live-Band.
+ort: Klosterkirche Pfullingen
 beginn_kurs: "18:00"
 beginn_konzert: "20:00"
 tanzlehrer: Jana Schaefer
