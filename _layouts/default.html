@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% if page.title and page.url != '/' %}{{ page.title }} – {% endif %}{{ site.title }}</title>
+<meta name="description" content="{{ page.description | default: site.description }}">
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+</head>
+<body>
+<header>
+  <a class="logo" href="{{ '/' | relative_url }}"><span class="beat" aria-hidden="true"><i></i><i></i></span>{{ site.title }}</a>
+  <nav aria-label="Hauptmenü">
+    {% assign nav = "Start|/,Events|/events/,Über uns|/ueber-uns/,Lindy Hop|/lindy-hop/,Kontakt|/kontakt/" | split: "," %}
+    {% for eintrag in nav %}
+      {% assign teile = eintrag | split: "|" %}
+      {% assign ziel = teile[1] %}
+      {% assign aktiv = false %}
+      {% if page.url == ziel %}{% assign aktiv = true %}{% endif %}
+      {% if ziel == "/events/" and page.collection == "events" %}{% assign aktiv = true %}{% endif %}
+      <a href="{{ ziel | relative_url }}"{% if aktiv %} aria-current="page"{% endif %}>{{ teile[0] }}</a>
+    {% endfor %}
+  </nav>
+</header>
+<main>
+<section class="{{ page.section_class | default: 'page' }}">
+{{ content }}
+</section>
+</main>
+<footer>
+  <span>Live gespielt, gemeinsam getanzt.</span>
+  <span><a href="{{ '/impressum/' | relative_url }}">Impressum</a><a href="{{ '/datenschutz/' | relative_url }}">Datenschutz</a></span>
+</footer>
+</body>
+</html>

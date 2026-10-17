@@ -1,0 +1,30 @@
+---
+layout: default
+title: Events
+permalink: /events/
+---
+{% assign heute = site.time | date: '%Y-%m-%d' %}
+{% assign alle = site.events | sort: 'date' %}
+{% assign naechstes = false %}
+{% for e in alle %}
+  {% assign tag = e.date | date: '%Y-%m-%d' %}
+  {% if tag >= heute %}{% unless naechstes %}{% assign naechstes = e %}{% endunless %}{% endif %}
+{% endfor %}
+
+{% if naechstes %}
+  {% include event-body.html e=naechstes body=naechstes.content %}
+{% else %}
+  <h2>Der nächste Abend</h2>
+  <p class="lead">Das nächste Datum steht noch nicht fest. Wer Bescheid bekommen möchte, <a href="mailto:{{ site.email }}?subject=Mailingliste">schreibt uns kurz</a>.</p>
+{% endif %}
+
+<h2 style="margin-top:3.5rem">Schon geswungen</h2>
+<ul class="archive">
+  {% assign rueckwaerts = alle | reverse %}
+  {% for e in rueckwaerts %}
+    {% assign tag = e.date | date: '%Y-%m-%d' %}
+    {% if tag < heute %}
+    <li><a href="{{ e.url | relative_url }}">{{ e.title }}</a>, {{ e.date | date: '%d.%m.%Y' }}{% if e.ort %}, {{ e.ort }}{% endif %}</li>
+    {% endif %}
+  {% endfor %}
+</ul>

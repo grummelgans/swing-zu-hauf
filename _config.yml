@@ -1,0 +1,32 @@
+# Grundeinstellungen. Nach Änderungen an dieser Datei Jekyll neu starten.
+title: Swing zu Hauf
+description: Ein Bruder-Projekt für Live-Swing und Social Dance.
+lang: de
+timezone: Europe/Berlin
+
+# Später die echte Domain eintragen, z. B. https://swing-zu-hauf.eu
+url: "https://grummelgans.github.io"
+# Bei einer Projektseite auf GitHub (nutzername.github.io/repo) hier "/repo" eintragen.
+# Bei eigener Domain oder nutzername.github.io leer lassen.
+baseurl: "/swing-zu-hauf"
+
+# Kontakt und Namen, die auf mehreren Seiten auftauchen
+email: jl.hauf@gmail.com
+bruder_schlagzeug: "Jan Hauf"   # TODO
+bruder_tanz: "Lukas Hauf"               # TODO
+
+# Events: pro Abend eine Datei in _events/
+collections:
+  events:
+    output: true
+    permalink: /events/:name/
+
+# WICHTIG: ohne "future: true" werden Events mit Datum in der Zukunft nicht angezeigt
+future: true
+
+# Jede Datei in _events/ bekommt automatisch das Event-Layout
+defaults:
+  - scope: { path: "", type: "events" }
+    values: { layout: event }
+
+exclude: [README.md, Gemfile, Gemfile.lock, vendor]

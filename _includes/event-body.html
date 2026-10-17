@@ -1,0 +1,45 @@
+{%- comment -%}
+Zeigt einen kompletten Abend. Wird von der Event-Unterseite (layout "event")
+und von der Übersichtsseite (nächstes Event) verwendet.
+Parameter: e = das Event, body = der freie Text des Events.
+{%- endcomment -%}
+{% assign e = include.e %}
+{% assign heute = site.time | date: '%Y-%m-%d' %}
+{% assign tag = e.date | date: '%Y-%m-%d' %}
+<h2>{{ e.title }}</h2>
+<p class="lead">{{ e.date | date: '%d.%m.%Y' }}{% if e.ort %}, {{ e.ort }}{% endif %}. {{ e.untertitel | default: 'Erst lernen, dann tanzen, dann nicht mehr aufhören.' }}</p>
+
+<div class="evening">
+  <article><h3>{{ e.beginn_kurs | default: 'Zu Beginn' }}</h3><div><h3>Tanzkurs</h3>
+    <p>{% if e.tanzlehrer %}Mit {% if e.tanzlehrer_link %}<a href="{{ e.tanzlehrer_link }}" target="_blank" rel="noopener">{{ e.tanzlehrer }}</a>{% else %}{{ e.tanzlehrer }}{% endif %} und {{ site.bruder_tanz }}. {% endif %}Ohne Vorkenntnisse, ohne Partner*in, ohne Angst.</p></div></article>
+  <article><h3>{{ e.beginn_konzert | default: 'Danach' }}</h3><div><h3>Live-Swing</h3>
+    <p>{% if e.band %}Mit {% if e.band_link %}<a href="{{ e.band_link }}" target="_blank" rel="noopener">{{ e.band }}</a>{% else %}{{ e.band }}{% endif %}. {% endif %}Am Schlagzeug: {{ site.bruder_schlagzeug }}.</p>
+    {% if e.band_mitglieder %}<p>{% for m in e.band_mitglieder %}{% if m.link %}<a href="{{ m.link }}" target="_blank" rel="noopener">{{ m.name }}</a>{% else %}{{ m.name }}{% endif %} ({{ m.instrument }}){% unless forloop.last %}, {% endunless %}{% endfor %}</p>{% endif %}</div></article>
+  {% if e.exkurs %}
+  <article><h3>Zwischendurch</h3><div><h3>Gedankenpause</h3><p>Ein kurzer philosophischer Exkurs: {{ e.exkurs }}.</p></div></article>
+  {% endif %}
+  <article><h3>Bis zum Schluss</h3><div><h3>Tanzen</h3><p>Bis die Füße streiken oder die Band.</p></div></article>
+</div>
+
+{% if include.body != blank %}<div class="prose">{{ include.body }}</div>{% endif %}
+
+{% if e.literatur %}
+<h3>Zum Nachdenken</h3>
+<ul class="archive">
+  {% for l in e.literatur %}<li>{% if l.link %}<a href="{{ l.link }}" target="_blank" rel="noopener">{{ l.titel }}</a>{% else %}{{ l.titel }}{% endif %}</li>{% endfor %}
+</ul>
+{% endif %}
+
+{% if tag >= heute %}
+  {% if e.tickets %}
+  <a class="btn" href="{{ e.tickets }}" target="_blank" rel="noopener">Okay, ich komme. Tickets bei {{ e.tickets_anbieter | default: 'unserem Veranstalter' }}</a>
+  <p class="warn" style="margin-top:2rem">Mögliche Nebenwirkungen: Lächeln, Schweiß, spontane überschwängliche Glücksmomente.</p>
+  {% else %}
+  <p class="sub">Der Ticketlink folgt. Wer Bescheid bekommen möchte, <a href="mailto:{{ site.email }}?subject=Mailingliste">schreibt uns kurz</a>.</p>
+  {% endif %}
+{% elsif e.fotos %}
+<h3 style="margin-top:2.5rem">Eindrücke</h3>
+<div class="gallery">
+  {% for f in e.fotos %}<figure><img src="{{ f.src | relative_url }}" alt="{{ f.alt }}" loading="lazy"></figure>{% endfor %}
+</div>
+{% endif %}

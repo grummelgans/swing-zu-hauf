@@ -1,0 +1,17 @@
+{%- comment -%} Findet das nächste Event (Datum heute oder später) und zeigt die Box für die Startseite. {%- endcomment -%}
+{% assign heute = site.time | date: '%Y-%m-%d' %}
+{% assign alle = site.events | sort: 'date' %}
+{% assign naechstes = false %}
+{% for e in alle %}
+  {% assign tag = e.date | date: '%Y-%m-%d' %}
+  {% if tag >= heute %}{% unless naechstes %}{% assign naechstes = e %}{% endunless %}{% endif %}
+{% endfor %}
+<div class="next">
+  {% if naechstes %}
+  <p>Als Nächstes: <strong>{{ naechstes.title }}</strong>, {{ naechstes.date | date: '%d.%m.%Y' }}{% if naechstes.ort %} in {{ naechstes.ort }}{% endif %}</p>
+  <a class="btn" href="{{ '/events/' | relative_url }}">Zum Abend</a>
+  {% else %}
+  <p>Das nächste Datum steht noch nicht fest.</p>
+  <a class="btn" href="mailto:{{ site.email }}?subject=Mailingliste">Sag Bescheid, wenn’s wieder swingt</a>
+  {% endif %}
+</div>
