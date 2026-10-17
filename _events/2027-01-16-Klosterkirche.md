@@ -6,7 +6,6 @@ ort: Alte Halle, Stuttgart
 beginn_kurs: "18:00"
 beginn_konzert: "20:00"
 tanzlehrer: Jana Schaefer
-band: Name der Band
 band_mitglieder:
   - { name: Franziska Kaupp, instrument: Gesang }
   - { name: Carl Krämer, instrument: Saxophon }
@@ -15,3 +14,4 @@ band_mitglieder:
 
 tickets: https://ikuh-pfullingen.de/sa-16-januar-27-20-uhr-swing-tanz-social/
 tickets_anbieter: iKuh Pfullingen e.V.
+---
