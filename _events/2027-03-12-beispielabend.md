@@ -1,6 +1,7 @@
 ---
 # BEISPIEL (ist ausgeblendet, solange 'published: false' drinsteht): Diese Datei kopieren, umbenennen (Datum-name.md) und ausfüllen.
 # Alles außer title und date ist optional. Was fehlt, wird auf der Seite weggelassen.
+published: false   # BEISPIEL: zum Ausprobieren diese Zeile löschen, für echte Events nicht nötig
 title: Swing im Saal
 date: 2027-03-12
 untertitel: Ein Abend mit Tanzkurs und Live-Band.   # optional, sonst Standardsatz

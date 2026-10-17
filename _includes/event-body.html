@@ -12,7 +12,7 @@ Parameter: e = das Event, body = der freie Text des Events.
 <div class="evening">
   <article><h3>{{ e.beginn_kurs | default: 'Zu Beginn' }}</h3><div><h3>Tanzkurs</h3>
     <p>{% if e.tanzlehrer %}Mit {% if e.tanzlehrer_link %}<a href="{{ e.tanzlehrer_link }}" target="_blank" rel="noopener">{{ e.tanzlehrer }}</a>{% else %}{{ e.tanzlehrer }}{% endif %} und {{ site.bruder_tanz }}. {% endif %}Ohne Vorkenntnisse, ohne Partner*in, ohne Angst.</p></div></article>
-  <article><h3>{{ e.beginn_konzert | default: 'Danach' }}</h3><div><h3>Live-Swing</h3>
+  <article><h3>{{ e.beginn_konzert | default: 'Danach' }}</h3><div><h3>Live-Musik</h3>
     <p>{% if e.band %}Mit {% if e.band_link %}<a href="{{ e.band_link }}" target="_blank" rel="noopener">{{ e.band }}</a>{% else %}{{ e.band }}{% endif %}. {% endif %}Am Schlagzeug: {{ site.bruder_schlagzeug }}.</p>
     {% if e.band_mitglieder %}<p>{% for m in e.band_mitglieder %}{% if m.link %}<a href="{{ m.link }}" target="_blank" rel="noopener">{{ m.name }}</a>{% else %}{{ m.name }}{% endif %} ({{ m.instrument }}){% unless forloop.last %}, {% endunless %}{% endfor %}</p>{% endif %}</div></article>
   {% if e.exkurs %}
