@@ -96,6 +96,8 @@ footer a:last-child{margin-right:0}
 .person-karte small{color:var(--soft)}
 .person-seite{margin:1.5rem 0}
 .person-seite img{max-width:20rem;width:100%;height:auto;display:block;border-radius:2px 18px 2px 18px}
+.person-social p{margin:.8rem 0 .3rem}
+.person-social ul{list-style:none;display:flex;flex-wrap:wrap;gap:.4rem 1rem;padding:0;margin:0}
 
 /* ---------- Archiv mit Vorschaubildern ---------- */
 .archive-grid{list-style:none;padding:0;margin:1rem 0;display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr))}

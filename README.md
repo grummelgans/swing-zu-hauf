@@ -15,7 +15,15 @@
 
 ## Stammdaten
 - Orte: `_data/orte.yml`. Veranstalter: `_data/veranstalter.yml`. Im Event steht nur das Kürzel.
-- Personen (mit Foto/Text): `_personen/kuerzel.md`. In der Besetzung dann `person: kuerzel`.
+- Personen (mit Foto/Beschreibung): `_personen/kuerzel.md`. Die Beschreibung erscheint auf der Personenseite, nicht in den Besetzungskarten. Social-Media-Links können dort als Liste mit frei wählbarem Namen und URL gepflegt werden:
+  ```yaml
+  social_links:
+    - name: Instagram
+      url: https://instagram.com/beispiel
+    - name: Bandcamp
+      url: https://beispiel.bandcamp.com
+  ```
+  In der Besetzung dann `person: kuerzel`.
   Wer keine eigene Seite braucht, wird direkt mit `name:` eingetragen.
 - Alle Standardtexte: `_data/texte.yml`.
 

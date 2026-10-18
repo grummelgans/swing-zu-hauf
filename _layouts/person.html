@@ -13,6 +13,16 @@ layout: default
 
 {% if page.text %}<p class="lead">{{ page.text }}</p>{% endif %}
 {% if page.link %}<p><a href="{{ page.link }}" target="_blank" rel="noopener">{{ t.labels.website }}</a></p>{% endif %}
+{% if page.social_links and page.social_links.size > 0 %}
+<div class="person-social">
+  <p><strong>{{ t.labels.social_media }}</strong></p>
+  <ul>
+    {% for social_link in page.social_links %}
+    <li><a href="{{ social_link.url }}" target="_blank" rel="noopener">{{ social_link.name }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
 
 {% assign alle = site.events | sort: 'date' | reverse %}
 {% assign treffer = "" | split: "," %}

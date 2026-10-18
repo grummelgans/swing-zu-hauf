@@ -9,10 +9,10 @@ beginn_konzert: "20:00"
 tanzlehrer:
   - { name: Jana Schaefer }
 besetzung:
-  - { name: Franziska Kaupp, instrument: Gesang }
-  - { name: Carl Krämer, instrument: Saxophon }
-  - { name: Philipp Schuhmacher, instrument: Klavier }
-  - { name: Max Preis, instrument: Kontrabass }
+  - { person: franziska-kaupp, instrument: Gesang }
+  - { person: carl-kraemer, instrument: Saxophon }
+  - { person: philipp-schuhmacher, instrument: Klavier }
+  - { person: max-preis, instrument: Kontrabass }
 eintritt: vorverkauf
 veranstalter_seite: https://ikuh-pfullingen.de/sa-16-januar-27-20-uhr-swing-tanz-social/
 tickets: https://eventfrog.de/de/p/konzerte/swing/lindy-hop-dance-social-pfullingen-7511353237208886412.html

@@ -141,7 +141,6 @@ Parameter: e = das Event, body = der freie Text des Events.
         <figcaption>
           <strong>{% if p_url %}<a href="{{ p_url | relative_url }}">{{ p_name }}</a>{% elsif p_link %}<a href="{{ p_link }}" target="_blank" rel="noopener">{{ p_name }}</a>{% else %}{{ p_name }}{% endif %}</strong>
           {% if m.instrument %}<span>{{ m.instrument }}</span>{% endif %}
-          {% if p_text %}<p>{{ p_text }}</p>{% endif %}
           {% if p_foto and p_credit %}<small>{{ t.foto_credit }} {{ p_credit }}</small>{% endif %}
         </figcaption>
       </figure>
