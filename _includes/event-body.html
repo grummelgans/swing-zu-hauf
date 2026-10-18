@@ -28,8 +28,9 @@ Parameter: e = das Event, body = der freie Text des Events.
 {% assign hat_vvk_link = false %}
 {% if e.tickets and eintritt != 'frei' and eintritt != 'abendkasse' %}{% assign hat_vvk_link = true %}{% endif %}
 {% if hat_vvk_link %}
-  {% assign kommen_ziel = e.tickets %}
-  {% assign kommen_extern = true %}
+  {% assign ticket_param = e.tickets | url_encode %}
+  {% assign kommen_ziel = '/dabei/vorverkauf/' | relative_url | append: '?ticket=' | append: ticket_param %}
+  {% assign kommen_extern = false %}
 {% else %}
   {% if eintritt == 'frei' or eintritt == 'abendkasse' %}{% assign kommen_fall = eintritt %}{% else %}{% assign kommen_fall = 'offen' %}{% endif %}
   {% assign kommen_ziel = '/dabei/' | append: kommen_fall | append: '/' | relative_url %}

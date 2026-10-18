@@ -27,7 +27,7 @@ schluss_text_ohne: "Bis die Füße streiken oder der Akku."
 
 nebenwirkungen: "Mögliche Nebenwirkungen: Lächeln, Schweiß, spontane überschwängliche Glücksmomente."
 
-button_kommen: "Ich komme!"
+button_kommen: "Da komme doch direkt!"
 button_bei: "bei"
 
 # Dank an den Veranstalter. {veranstalter} wird durch den Namen ersetzt.
@@ -49,9 +49,15 @@ status:
     badge: "Abgesagt"
     text: "Dieser Abend findet leider nicht statt. Sobald es einen neuen Termin gibt, sagen wir es hier."
 
-# Erklärseiten hinter "Okay, ich komme.", wenn es keinen Ticketlink gibt
+# Zwischenseiten hinter "Da komme doch direkt!"
 dabei_zurueck: "Zurück zum Abend"
 dabei:
+  vorverkauf:
+    titel: "Super, dass du dabei bist!"
+    absaetze:
+      - "Hier geht's direkt zu den Online-Tickets für diesen Abend."
+    ticket_link: "Zu den Online-Tickets"
+    ticket_fehler: "Der Link zu den Online-Tickets konnte nicht geladen werden. Geh bitte zurück zum Abend und versuche es dort noch einmal."
   abendkasse:
     titel: "Keine Tickets im Voraus? Genau so ist es."
     absaetze:

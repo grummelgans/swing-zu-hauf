@@ -9,6 +9,26 @@ layout: default
     <p{% if forloop.first %} class="lead"{% endif %}>{% include satz.html s=a betreff="Mailingliste" %}</p>
   {% endfor %}
 </div>
+{% if page.fall == 'vorverkauf' %}
+<p id="ticket-fehler" role="alert">{{ d.ticket_fehler }}</p>
+<p><a class="btn" id="ticket-link" href="#" target="_blank" rel="noopener" hidden>{{ d.ticket_link }}</a></p>
+<script>
+  const ticketLink = document.getElementById('ticket-link');
+  const ticketError = document.getElementById('ticket-fehler');
+  const rawTicket = new URLSearchParams(location.search).get('ticket');
+  let ticketUrl;
+  try {
+    ticketUrl = new URL(rawTicket);
+  } catch {
+    ticketUrl = null;
+  }
+  if (ticketUrl && (ticketUrl.protocol === 'https:' || ticketUrl.protocol === 'http:')) {
+    ticketLink.href = ticketUrl.href;
+    ticketLink.hidden = false;
+    ticketError.hidden = true;
+  }
+</script>
+{% endif %}
 <p><a class="btn" id="zurueck" href="{{ '/events/' | relative_url }}">{{ t.dabei_zurueck }}</a></p>
 <script>
   document.getElementById('zurueck').addEventListener('click', function (ev) {
