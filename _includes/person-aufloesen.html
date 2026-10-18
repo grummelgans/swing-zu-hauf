@@ -1,0 +1,25 @@
+{%- comment -%}
+Löst einen Eintrag (Besetzung / Tanzlehrer*in) auf: entweder per "person:" aus _personen/
+oder direkt über name/link/foto/text. Parameter: m.
+Setzt: p_name, p_link, p_foto, p_credit, p_text, p_url.
+{%- endcomment -%}
+{%- assign p_name = include.m.name -%}
+{%- assign p_link = include.m.link -%}
+{%- assign p_foto = include.m.foto -%}
+{%- assign p_credit = include.m.foto_credit -%}
+{%- assign p_text = include.m.text -%}
+{%- assign p_url = nil -%}
+{%- assign p_doc = nil -%}
+{%- if include.m.person -%}
+  {%- assign p_doc = site.personen | where: 'slug', include.m.person | first -%}
+  {%- if p_doc -%}
+    {%- assign p_name = p_doc.title -%}
+    {%- assign p_link = p_doc.link -%}
+    {%- assign p_foto = p_doc.foto -%}
+    {%- assign p_credit = p_doc.foto_credit -%}
+    {%- assign p_text = p_doc.text -%}
+    {%- assign p_url = p_doc.url -%}
+  {%- else -%}
+    {%- assign p_name = include.m.person -%}
+  {%- endif -%}
+{%- endif -%}

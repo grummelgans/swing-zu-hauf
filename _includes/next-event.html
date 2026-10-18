@@ -8,8 +8,10 @@
 {% endfor %}
 <div class="next">
   {% if naechstes %}
-  <p>Als Nächstes: <strong>{{ naechstes.title }}</strong>, {{ naechstes.date | date: '%d.%m.%Y' }}{% if naechstes.ort %} in {{ naechstes.ort }}{% endif %}</p>
-  <a class="btn" href="{{ '/events/' | relative_url }}">Zum Abend</a>
+  {% include event-ort.html e=naechstes %}
+  {% assign status_info = site.data.texte.status[naechstes.status] %}
+  <p>Als Nächstes: <strong>{{ naechstes.title }}</strong>, {{ naechstes.date | date: '%d.%m.%Y' }}{% if ort_kurz %}, {{ ort_kurz }}{% endif %}{% if status_info %} ({{ status_info.badge | downcase }}){% endif %}</p>  
+  <a class="btn" href="{{ '/events/' | relative_url }}">Zum Event</a>
   {% else %}
   <p>Das nächste Datum steht noch nicht fest.</p>
   <a class="btn" href="mailto:{{ site.email }}?subject=Mailingliste">Sag Bescheid, wenn’s wieder swingt</a>

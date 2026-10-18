@@ -1,0 +1,7 @@
+{%- comment -%} Gibt eine Liste als "A, B und C" aus, nur Text ohne Links. Parameter: liste. {%- endcomment -%}
+{%- for m in include.liste -%}
+  {%- include person-aufloesen.html m=m -%}
+  {{- p_name -}}
+  {%- if m.instrument %} ({{ m.instrument }}){% endif -%}
+  {%- unless forloop.last -%}{%- if forloop.rindex == 2 %} und {% else %}, {% endif -%}{%- endunless -%}
+{%- endfor -%}

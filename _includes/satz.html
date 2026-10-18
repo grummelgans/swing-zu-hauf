@@ -1,0 +1,17 @@
+{%- comment -%}
+Gibt einen Text aus texte.yml aus und wandelt [[...]] und ((...)) in Links um.
+  [[...]]  = Link auf "ziel", falls mitgegeben, sonst Mail an euch
+  ((...))  = Link auf die Datenschutzseite
+Parameter: s = der Text, ziel = optionales Linkziel, betreff = optionaler Mail-Betreff.
+{%- endcomment -%}
+{%- if include.ziel -%}
+  {%- if include.ziel contains 'http' -%}
+    {%- capture satz_auf -%}<a href="{{ include.ziel }}" target="_blank" rel="noopener">{%- endcapture -%}
+  {%- else -%}
+    {%- capture satz_auf -%}<a href="{{ include.ziel }}">{%- endcapture -%}
+  {%- endif -%}
+{%- else -%}
+  {%- capture satz_auf -%}<a href="mailto:{{ site.email }}{% if include.betreff %}?subject={{ include.betreff | url_encode }}{% endif %}">{%- endcapture -%}
+{%- endif -%}
+{%- capture satz_ds_auf -%}<a href="{{ '/datenschutz/' | relative_url }}">{%- endcapture -%}
+{{- include.s | replace: '[[', satz_auf | replace: ']]', '</a>' | replace: '((', satz_ds_auf | replace: '))', '</a>' -}}

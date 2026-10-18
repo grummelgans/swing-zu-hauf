@@ -10,23 +10,26 @@ url: "https://grummelgans.github.io"
 # Bei eigener Domain oder nutzername.github.io leer lassen.
 baseurl: "/swing-zu-hauf"
 
-# Kontakt und Namen, die auf mehreren Seiten auftauchen
+# Kontakt (Namen der Brüder stehen jetzt in _data/texte.yml und _personen/)
 email: jlhauf.info@gmail.com
-bruder_schlagzeug: "Jan Hauf"   # TODO
-bruder_tanz: "Lukas Hauf"               # TODO
 
-# Events: pro Abend eine Datei in _events/
+# Events: pro Abend eine Datei in _events/. Personen: pro Person eine Datei in _personen/
 collections:
   events:
     output: true
     permalink: /events/:name/
+  personen:
+    output: true
+    permalink: /personen/:name/
 
 # WICHTIG: ohne "future: true" werden Events mit Datum in der Zukunft nicht angezeigt
 future: true
 
-# Jede Datei in _events/ bekommt automatisch das Event-Layout
+# Layouts automatisch zuweisen
 defaults:
   - scope: { path: "", type: "events" }
     values: { layout: event }
+  - scope: { path: "", type: "personen" }
+    values: { layout: person }
 
 exclude: [README.md, Gemfile, Gemfile.lock, vendor]

@@ -3,6 +3,7 @@ layout: default
 title: Events
 permalink: /events/
 ---
+{% assign t = site.data.texte %}
 {% assign heute = site.time | date: '%Y-%m-%d' %}
 {% assign alle = site.events | sort: 'date' %}
 {% assign naechstes = false %}
@@ -18,13 +19,24 @@ permalink: /events/
   <p class="lead">Das nächste Datum steht noch nicht fest. Wer Bescheid bekommen möchte, <a href="mailto:{{ site.email }}?subject=Mailingliste">schreibt uns kurz</a>.</p>
 {% endif %}
 
-<h2 style="margin-top:3.5rem">Schon geswungen</h2>
-<ul class="archive">
+<h2 style="margin-top:3.5rem">{{ t.archiv_titel }}</h2>
+<ul class="archive-grid">
   {% assign rueckwaerts = alle | reverse %}
   {% for e in rueckwaerts %}
     {% assign tag = e.date | date: '%Y-%m-%d' %}
     {% if tag < heute %}
-    <li><a href="{{ e.url | relative_url }}">{{ e.title }}</a>, {{ e.date | date: '%d.%m.%Y' }}{% if e.ort %}, {{ e.ort }}{% endif %}</li>
+    {% include event-assets.html e=e %}
+    {% include event-ort.html e=e %}
+    <li>
+      <a href="{{ e.url | relative_url }}">
+        {% if ev_vorschau %}<img src="{{ ev_vorschau | relative_url }}" alt="" loading="lazy">{% endif %}
+        <span class="archive-text">
+          <strong>{{ e.title }}</strong>
+          <span>{{ e.date | date: '%d.%m.%Y' }}{% if ort_kurz %}, {{ ort_kurz }}{% endif %}</span>
+          {% if ev_fotos.size > 0 %}<span>{{ ev_fotos.size }} {% if ev_fotos.size == 1 %}Foto{% else %}Fotos{% endif %}</span>{% endif %}
+        </span>
+      </a>
+    </li>
     {% endif %}
   {% endfor %}
 </ul>

@@ -4,42 +4,185 @@ und von der Übersichtsseite (nächstes Event) verwendet.
 Parameter: e = das Event, body = der freie Text des Events.
 {%- endcomment -%}
 {% assign e = include.e %}
+{% assign t = site.data.texte %}
 {% assign heute = site.time | date: '%Y-%m-%d' %}
 {% assign tag = e.date | date: '%Y-%m-%d' %}
-<h2>{{ e.title }}</h2>
-<p class="lead">{{ e.date | date: '%d.%m.%Y' }}{% if e.ort %}, {{ e.ort }}{% endif %}. {{ e.untertitel | default: 'Erst lernen, dann tanzen, dann nicht mehr aufhören.' }}</p>
+{% assign datum = e.date | date: '%d.%m.%Y' %}
+{% include event-assets.html e=e %}
+{% include event-ort.html e=e %}
 
-<div class="evening">
-  <article><h3>{{ e.beginn_kurs | default: 'Zu Beginn' }}</h3><div><h3>Tanzkurs</h3>
-    <p>{% if e.tanzlehrer %}Mit {% if e.tanzlehrer_link %}<a href="{{ e.tanzlehrer_link }}" target="_blank" rel="noopener">{{ e.tanzlehrer }}</a>{% else %}{{ e.tanzlehrer }}{% endif %} und {{ site.bruder_tanz }}. {% endif %}Ohne Vorkenntnisse, ohne Partner*in, ohne Angst.</p></div></article>
-  <article><h3>{{ e.beginn_konzert | default: 'Danach' }}</h3><div><h3>Live-Musik</h3>
-    <p>{% if e.band %}Mit {% if e.band_link %}<a href="{{ e.band_link }}" target="_blank" rel="noopener">{{ e.band }}</a>{% else %}{{ e.band }}{% endif %}. {% endif %}Am Schlagzeug: {{ site.bruder_schlagzeug }}.</p>
-    {% if e.band_mitglieder %}<p>{% for m in e.band_mitglieder %}{% if m.link %}<a href="{{ m.link }}" target="_blank" rel="noopener">{{ m.name }}</a>{% else %}{{ m.name }}{% endif %} ({{ m.instrument }}){% unless forloop.last %}, {% endunless %}{% endfor %}</p>{% endif %}</div></article>
-  {% if e.exkurs %}
-  <article><h3>Zwischendurch</h3><div><h3>Gedankenpause</h3><p>Ein kurzer philosophischer Exkurs: {{ e.exkurs }}.</p></div></article>
+{%- comment -%} Veranstalter: Stammdaten oder freier Text {%- endcomment -%}
+{% assign v_name = e.veranstalter %}
+{% assign v_link = e.veranstalter_link %}
+{% assign v_doc = site.data.veranstalter[e.veranstalter] %}
+{% if v_doc %}{% assign v_name = v_doc.name %}{% assign v_link = v_doc.link %}{% endif %}
+{% assign danken = true %}
+{% if e.dank == false or v_doc.dank == false %}{% assign danken = false %}{% endif %}
+
+{%- comment -%} Eintritt, Status und Ziel des Buttons {%- endcomment -%}
+{% assign status_info = t.status[e.status] %}
+{% assign eintritt = e.eintritt %}
+{% if eintritt == blank %}{% if e.tickets %}{% assign eintritt = 'vorverkauf' %}{% else %}{% assign eintritt = 'offen' %}{% endif %}{% endif %}
+{% assign eintritt_satz = t.eintritt[eintritt] %}
+{% assign anbieter = e.tickets_anbieter | default: v_name %}
+{% assign hat_vvk_link = false %}
+{% if e.tickets and eintritt != 'frei' and eintritt != 'abendkasse' %}{% assign hat_vvk_link = true %}{% endif %}
+{% if hat_vvk_link %}
+  {% assign kommen_ziel = e.tickets %}
+  {% assign kommen_extern = true %}
+{% else %}
+  {% if eintritt == 'frei' or eintritt == 'abendkasse' %}{% assign kommen_fall = eintritt %}{% else %}{% assign kommen_fall = 'offen' %}{% endif %}
+  {% assign kommen_ziel = '/dabei/' | append: kommen_fall | append: '/' | relative_url %}
+  {% assign kommen_extern = false %}
+{% endif %}
+
+{%- comment -%} Tanzlehrer*innen: Gäste aus dem Event, dazu automatisch Lukas (außer lukas: false / tanzkurs: false) {%- endcomment -%}
+{% assign tanz_leute = "" | split: "," %}
+{% if e.tanzlehrer %}{% assign tanz_leute = tanz_leute | concat: e.tanzlehrer %}{% endif %}
+{% if e.tanzkurs != false and e.lukas != false %}
+  {% assign schon = false %}
+  {% for m in tanz_leute %}{% if m.person == t.standard_tanzlehrer.person %}{% assign schon = true %}{% endif %}{% endfor %}
+  {% unless schon %}{% assign tanz_leute = tanz_leute | push: t.standard_tanzlehrer %}{% endunless %}
+{% endif %}
+
+{%- comment -%} Besetzung: Liste aus dem Event, dazu automatisch Jan (außer jan: false / musik: ohne) {%- endcomment -%}
+{% assign musik_leute = "" | split: "," %}
+{% assign musik_satz = nil %}
+{% if e.musik != 'ohne' %}
+  {% if e.besetzung %}{% assign musik_leute = musik_leute | concat: e.besetzung %}{% endif %}
+  {% if e.jan != false %}
+    {% assign schon = false %}
+    {% for m in musik_leute %}{% if m.person == t.standard_musiker.person %}{% assign schon = true %}{% endif %}{% endfor %}
+    {% unless schon %}{% assign musik_leute = musik_leute | push: t.standard_musiker %}{% endunless %}
   {% endif %}
-  <article><h3>Bis zum Schluss</h3><div><h3>Tanzen</h3><p>Bis die Füße streiken oder die Band.</p></div></article>
+
+  {%- comment -%} Allgemeiner Satz für die Live-Musik-Karte (eigener Satz per musik_text möglich) {%- endcomment -%}
+  {% assign musik_satz = e.musik_text | default: '' %}
+  {% if musik_satz == '' %}
+    {% if e.besetzung.size > 0 %}
+      {% if e.jan == false %}{% assign musik_satz = t.musik_satz_ohne_jan %}{% else %}{% assign musik_satz = t.musik_satz %}{% endif %}
+    {% elsif e.jan != false %}
+      {% assign musik_satz = t.musik_satz_nur_jan %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+{% assign zeige_besetzung = false %}
+{% if e.musik != 'ohne' and e.besetzung.size > 0 %}{% assign zeige_besetzung = true %}{% endif %}
+
+<h2>{{ e.title }}{% if status_info %}<span class="badge badge-{{ e.status }}">{{ status_info.badge }}</span>{% endif %}</h2>
+<p class="lead">{{ datum }}{% if ort_kurz %}, {{ ort_kurz }}{% endif %}. {{ e.untertitel | default: t.untertitel }}</p>
+
+<div class="event-layout{% if ev_plakat %} mit-plakat{% endif %}">
+  <div class="evening">
+    {% if e.tanzkurs != false %}
+    <article><h3>{{ e.beginn_kurs | default: t.labels.zu_beginn }}</h3><div><h3>{{ t.labels.tanzkurs }}</h3>
+      <p>{% if tanz_leute.size > 0 %}Mit {% include leute-inline.html liste=tanz_leute %}. {% endif %}{{ e.tanz_text | default: t.tanz_text }}</p></div></article>
+    {% endif %}
+
+    {% if e.tanzkurs == false %}{% assign musik_zeit_default = t.labels.zu_beginn %}{% else %}{% assign musik_zeit_default = t.labels.danach %}{% endif %}
+    {% if e.musik == 'ohne' %}
+    <article><h3>{{ e.beginn_konzert | default: musik_zeit_default }}</h3><div><h3>{{ t.labels.musik_ohne }}</h3>
+      <p>{{ e.musik_text | default: t.musik_ohne_text }}</p>
+      <p>{{ e.musik_hinweis | default: t.musik_ohne_hinweis }}</p></div></article>
+    {% else %}
+    <article><h3>{{ e.beginn_konzert | default: musik_zeit_default }}</h3><div><h3>{{ t.labels.live_musik }}</h3>
+      {% if musik_satz != '' %}<p>{% include satz.html s=musik_satz ziel="#besetzung" %}</p>{% endif %}</div></article>
+    {% endif %}
+
+    {% for x in e.extras %}
+    <article><h3>{{ x.zeit | default: t.labels.extra_zeit }}</h3><div><h3>{{ x.titel | default: t.labels.extra_titel }}</h3>{{ x.text | markdownify }}</div></article>
+    {% endfor %}
+
+    <article><h3>{{ t.labels.schluss_zeit }}</h3><div><h3>{{ t.labels.schluss_titel }}</h3><p>{% if e.musik == 'ohne' %}{{ t.schluss_text_ohne }}{% else %}{{ t.schluss_text }}{% endif %}</p></div></article>
+  </div>
+
+  {% if ev_plakat %}
+  {% capture plakat_alt_standard %}Plakat: {{ e.title }}, {{ datum }}{% endcapture %}
+  <figure class="plakat">
+    <a href="{{ ev_plakat | relative_url }}" target="_blank" rel="noopener" title="{{ t.labels.plakat_link }}"><img src="{{ ev_plakat | relative_url }}" alt="{{ e.plakat_alt | default: plakat_alt_standard }}" loading="lazy"></a>
+  </figure>
+  {% endif %}
 </div>
 
 {% if include.body != blank %}<div class="prose">{{ include.body }}</div>{% endif %}
 
-{% if e.literatur %}
-<h3>Zum Nachdenken</h3>
-<ul class="archive">
-  {% for l in e.literatur %}<li>{% if l.link %}<a href="{{ l.link }}" target="_blank" rel="noopener">{{ l.titel }}</a>{% else %}{{ l.titel }}{% endif %}</li>{% endfor %}
-</ul>
+{%- comment -%} Button und Nebenwirkungen: nur für kommende Abende {%- endcomment -%}
+{% if tag >= heute %}
+<div class="kommen">
+  {% if status_info %}
+    <p>{% include satz.html s=status_info.text betreff="Mailingliste" %}</p>
+  {% else %}
+    <a class="btn" href="{{ kommen_ziel }}"{% if kommen_extern %} target="_blank" rel="noopener"{% endif %}>{{ t.button_kommen }}</a>
+  {% endif %}
+  {% if e.status != 'abgesagt' %}<p class="warn">{{ t.nebenwirkungen }}</p>{% endif %}
+</div>
 {% endif %}
 
-{% if tag >= heute %}
-  {% if e.tickets %}
-  <a class="btn" href="{{ e.tickets }}" target="_blank" rel="noopener">Okay, ich komme. Tickets bei {{ e.tickets_anbieter | default: 'unserem Veranstalter' }}</a>
-  <p class="warn" style="margin-top:2rem">Mögliche Nebenwirkungen: Lächeln, Schweiß, spontane überschwängliche Glücksmomente.</p>
-  {% else %}
-  <p class="sub">Der Ticketlink folgt. Wer Bescheid bekommen möchte, <a href="mailto:{{ site.email }}?subject=Mailingliste">schreibt uns kurz</a>.</p>
-  {% endif %}
-{% elsif e.fotos %}
-<h3 style="margin-top:2.5rem">Eindrücke</h3>
+{%- comment -%} Dank an den Veranstalter {%- endcomment -%}
+{% if v_name and danken %}
+  {% assign dank_ziel = e.veranstalter_seite | default: v_link %}
+  {% if dank_ziel %}{% assign dank_satz = t.dank %}{% else %}{% assign dank_satz = t.dank_ohne_link %}{% endif %}
+  {% capture dank_name %}<strong>{{ v_name }}</strong>{% endcapture %}
+  {% assign dank_satz = dank_satz | replace: '{veranstalter}', dank_name %}
+  <p class="dank">{% include satz.html s=dank_satz ziel=dank_ziel %}</p>
+{% endif %}
+
+{%- comment -%} Besetzung {%- endcomment -%}
+{% if zeige_besetzung %}
+<section class="besetzung" id="besetzung">
+  <h3>{{ t.labels.besetzung_titel }}</h3>
+  {% if e.band %}<p class="klein">{{ t.labels.band }} {% if e.band_link %}<a href="{{ e.band_link }}" target="_blank" rel="noopener">{{ e.band }}</a>{% else %}{{ e.band }}{% endif %}</p>{% endif %}
+  <div class="portraits">
+    {% for m in musik_leute %}
+      {% include person-aufloesen.html m=m %}
+      <figure class="person-karte">
+        {% if p_foto %}<img src="{{ p_foto | relative_url }}" alt="{{ p_name }}" loading="lazy">{% endif %}
+        <figcaption>
+          <strong>{% if p_url %}<a href="{{ p_url | relative_url }}">{{ p_name }}</a>{% elsif p_link %}<a href="{{ p_link }}" target="_blank" rel="noopener">{{ p_name }}</a>{% else %}{{ p_name }}{% endif %}</strong>
+          {% if m.instrument %}<span>{{ m.instrument }}</span>{% endif %}
+          {% if p_text %}<p>{{ p_text }}</p>{% endif %}
+          {% if p_foto and p_credit %}<small>{{ t.foto_credit }} {{ p_credit }}</small>{% endif %}
+        </figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{%- comment -%} Kurz und knapp: nur für kommende Abende, die nicht abgesagt sind {%- endcomment -%}
+{% if tag >= heute and e.status != 'abgesagt' %}
+<section class="infos">
+  <h3>{{ t.labels.infos_titel }}</h3>
+  <dl class="infos-liste">
+    {% if v_name %}<dt>{{ t.labels.veranstalter }}</dt><dd>{% if v_link %}<a href="{{ v_link }}" target="_blank" rel="noopener">{{ v_name }}</a>{% else %}{{ v_name }}{% endif %}</dd>{% endif %}
+    {% if ort_name %}<dt>{{ t.labels.ort }}</dt><dd>{{ ort_name }}{% if ort_adresse %}, {{ ort_adresse }}{% endif %} · <a href="{{ ort_maps }}" target="_blank" rel="noopener">{{ t.labels.karte }}</a></dd>{% endif %}
+    {% if e.einlass %}<dt>{{ t.labels.einlass }}</dt><dd>{{ e.einlass }} {{ t.labels.uhr }}</dd>{% endif %}
+    <dt>{{ t.labels.tickets }}</dt>
+    <dd>{% if status_info %}{{ status_info.badge }}{% else %}{% include satz.html s=eintritt_satz betreff="Mailingliste" %}{% if e.eintritt_hinweis %} {{ e.eintritt_hinweis }}{% endif %}{% if hat_vvk_link %} <a href="{{ e.tickets }}" target="_blank" rel="noopener">{{ t.labels.ticket_link }}{% if anbieter %} {{ t.button_bei }} {{ anbieter }}{% endif %}</a>{% endif %}{% endif %}</dd>
+    {% if e.preis %}<dt>{{ t.labels.preis }}</dt><dd>{{ e.preis }}</dd>{% endif %}
+  </dl>
+
+  {%- comment -%} Kalendereintrag als .ics-Datenlink (Zeiten ohne Zeitzone = lokale Zeit der Gäste) {%- endcomment -%}
+  {% assign ics_tag = e.date | date: '%Y%m%d' %}
+  {% assign ics_start = e.beginn_kurs | default: e.beginn_konzert %}
+  {% assign ics_ende = e.ende | default: t.ics_ende %}
+  {% capture ics_zeiten %}{% if ics_start %}DTSTART:{{ ics_tag }}T{{ ics_start | remove: ':' }}00%0D%0ADTEND:{{ ics_tag }}T{{ ics_ende | remove: ':' }}00%0D%0A{% else %}DTSTART;VALUE=DATE:{{ ics_tag }}%0D%0A{% endif %}{% endcapture %}
+  {% capture ics_text %}
+BEGIN:VCALENDAR%0D%0AVERSION:2.0%0D%0APRODID:-//swing-zu-hauf//DE%0D%0ABEGIN:VEVENT%0D%0AUID:{{ ics_tag }}%40swing-zu-hauf%0D%0ADTSTAMP:{{ ics_tag }}T000000Z%0D%0A{{ ics_zeiten }}SUMMARY:{{ e.title | replace: ',', '\,' | url_encode | replace: '+', '%20' }}%0D%0A{% if ort_suche %}LOCATION:{{ ort_suche | replace: ',', '\,' | url_encode | replace: '+', '%20' }}%0D%0A{% endif %}URL:{{ e.url | absolute_url | url_encode }}%0D%0AEND:VEVENT%0D%0AEND:VCALENDAR
+  {% endcapture %}
+  {% assign ics_text = ics_text | strip_newlines | strip %}
+  <p><a href="data:text/calendar;charset=utf-8,{{ ics_text }}" download="swing-zu-hauf-{{ ics_tag }}.ics">{{ t.ics_link }}</a></p>
+
+  {% if e.foto_vorab %}<p class="klein">{% include satz.html s=t.foto_vorab %}</p>{% endif %}
+</section>
+{% endif %}
+
+{%- comment -%} Eindrücke: nur für vergangene Abende {%- endcomment -%}
+{% if tag < heute and ev_fotos.size > 0 %}
+<h3 style="margin-top:2.5rem">{{ t.labels.eindruecke }}</h3>
 <div class="gallery">
-  {% for f in e.fotos %}<figure><img src="{{ f.src | relative_url }}" alt="{{ f.alt }}" loading="lazy"></figure>{% endfor %}
+  {% for pfad in ev_fotos %}<figure><a href="{{ pfad | relative_url }}" target="_blank" rel="noopener"><img src="{{ pfad | relative_url }}" alt="{{ e.title }}, {{ datum }}: Foto {{ forloop.index }}" loading="lazy"></a></figure>{% endfor %}
 </div>
+{% if e.fotos_credit %}<p class="klein">{{ t.foto_credit }} {{ e.fotos_credit }}</p>{% endif %}
+<p class="klein">{% include satz.html s=t.foto_nachher %}</p>
 {% endif %}

@@ -1,0 +1,26 @@
+{%- comment -%}
+Sucht Plakat und Fotos eines Events anhand des Datums.
+  Plakat: assets/img/events/JJJJ-MM-TT/plakat.jpg (oder .png/.webp)
+  Fotos:  assets/img/events/JJJJ-MM-TT/fotos/*
+Parameter: e. Setzt: ev_plakat, ev_fotos (Liste von Pfaden), ev_vorschau.
+{%- endcomment -%}
+{%- assign ev_tag = include.e.date | date: '%Y-%m-%d' -%}
+{%- assign ev_ordner = 'assets/img/events/' | append: ev_tag | append: '/' -%}
+{%- assign ev_plakat = nil -%}
+{%- assign ev_fotos = "" | split: "," -%}
+{%- for f in site.static_files -%}
+  {%- if f.path contains ev_ordner -%}
+    {%- assign ev_ext = f.extname | downcase -%}
+    {%- if ev_ext == '.jpg' or ev_ext == '.jpeg' or ev_ext == '.png' or ev_ext == '.webp' -%}
+      {%- assign ev_pfad = f.path | prepend: '/' | replace: '//', '/' -%}
+      {%- assign ev_basis = f.name | downcase | split: '.' | first -%}
+      {%- if ev_basis == 'plakat' -%}
+        {%- assign ev_plakat = ev_pfad -%}
+      {%- elsif f.path contains '/fotos/' -%}
+        {%- assign ev_fotos = ev_fotos | push: ev_pfad -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign ev_fotos = ev_fotos | sort -%}
+{%- assign ev_vorschau = ev_fotos.first | default: ev_plakat -%}

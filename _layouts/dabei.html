@@ -1,0 +1,20 @@
+---
+layout: default
+---
+{% assign t = site.data.texte %}
+{% assign d = t.dabei[page.fall] %}
+<h2>{{ d.titel }}</h2>
+<div class="prose">
+  {% for a in d.absaetze %}
+    <p{% if forloop.first %} class="lead"{% endif %}>{% include satz.html s=a betreff="Mailingliste" %}</p>
+  {% endfor %}
+</div>
+<p><a class="btn" id="zurueck" href="{{ '/events/' | relative_url }}">{{ t.dabei_zurueck }}</a></p>
+<script>
+  document.getElementById('zurueck').addEventListener('click', function (ev) {
+    if (document.referrer && document.referrer.indexOf(location.origin) === 0 && history.length > 1) {
+      ev.preventDefault();
+      history.back();
+    }
+  });
+</script>

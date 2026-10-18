@@ -1,0 +1,7 @@
+# Ein Eintrag pro Spielort. Der Schlüssel (z. B. klosterkirche-pfullingen) steht im Event bei "ort:".
+# Ohne "maps:" wird der Kartenlink automatisch aus Name und Adresse gebaut.
+klosterkirche-pfullingen:
+  kurz: Klosterkirche Pfullingen                 # für "Als Nächstes" und die Zeile unter der Überschrift
+  name: Kulturhaus Klosterkirche
+  adresse: "Klosterstraße 2, 72793 Pfullingen"
+  maps: https://maps.app.goo.gl/Ys6sKKUdXowmMr756

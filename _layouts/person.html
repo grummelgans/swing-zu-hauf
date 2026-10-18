@@ -1,0 +1,33 @@
+---
+layout: default
+---
+{% assign t = site.data.texte %}
+<h2>{{ page.title }}</h2>
+
+{% if page.foto %}
+<figure class="person-seite">
+  <img src="{{ page.foto | relative_url }}" alt="{{ page.title }}">
+  {% if page.foto_credit %}<figcaption class="klein">{{ t.foto_credit }} {{ page.foto_credit }}</figcaption>{% endif %}
+</figure>
+{% endif %}
+
+{% if page.text %}<p class="lead">{{ page.text }}</p>{% endif %}
+{% if page.link %}<p><a href="{{ page.link }}" target="_blank" rel="noopener">{{ t.labels.website }}</a></p>{% endif %}
+
+{% assign alle = site.events | sort: 'date' | reverse %}
+{% assign treffer = "" | split: "," %}
+{% for ev in alle %}
+  {% assign dabei = false %}
+  {% for m in ev.besetzung %}{% if m.person == page.slug %}{% assign dabei = true %}{% endif %}{% endfor %}
+  {% for m in ev.tanzlehrer %}{% if m.person == page.slug %}{% assign dabei = true %}{% endif %}{% endfor %}
+  {% if page.slug == t.standard_musiker.person and ev.musik != 'ohne' and ev.jan != false %}{% assign dabei = true %}{% endif %}
+  {% if page.slug == t.standard_tanzlehrer.person and ev.tanzkurs != false and ev.lukas != false %}{% assign dabei = true %}{% endif %}
+  {% if dabei %}{% assign treffer = treffer | push: ev %}{% endif %}
+{% endfor %}
+
+{% if treffer.size > 0 %}
+<h3 style="margin-top:2.5rem">{{ t.person_dabei }}</h3>
+<ul class="archive">
+  {% for ev in treffer %}<li><a href="{{ ev.url | relative_url }}">{{ ev.title }}</a>, {{ ev.date | date: '%d.%m.%Y' }}</li>{% endfor %}
+</ul>
+{% endif %}

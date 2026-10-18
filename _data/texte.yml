@@ -1,0 +1,105 @@
+# Alle Standardtexte und Beschriftungen an einem Ort.
+# [[Text]] wird zu einem Link (Standard: Mail an euch; wo ein Ziel mitgegeben wird, dorthin),
+# ((Text)) zu einem Link auf die Datenschutzseite.
+
+# Wer ist standardmäßig dabei? ("person" = Dateiname in _personen/ ohne .md)
+standard_musiker: { person: jan-hauf, instrument: Schlagzeug }
+standard_tanzlehrer: { person: lukas-hauf }
+
+# Standard-Ende für den Kalendereintrag, wenn im Event kein "ende:" steht
+ics_ende: "23:00"
+
+untertitel: "Erst lernen, dann tanzen, dann nicht mehr aufhören."
+
+tanz_text: "Ohne Voraussetzungen, weder Vorkenntnisse noch Partner*in. Alle sind willkommen!"
+
+# Live-Musik-Satz. [[Besetzung]] springt zum Besetzungs-Bereich weiter unten.
+# "Jan Hauf" und "Schlagzeug" stehen hier direkt im Text (passend zu standard_musiker).
+musik_satz: "Jazz-Swing-Musik mit Jan Hauf am Schlagzeug und großartiger [[Besetzung]]."
+musik_satz_ohne_jan: "Jazz-Swing-Musik mit großartiger [[Besetzung]]."
+musik_satz_nur_jan: "Jazz-Swing-Musik mit Jan Hauf am Schlagzeug."
+
+musik_ohne_text: "Swing-Musik aus der Box."
+musik_ohne_hinweis: "Ausnahmsweise ohne Live-Musik. Mit Band ist es natürlich schöner, und das bleibt weiterhin unser Ziel."
+
+schluss_text: "Bis die Füße streiken oder die Band."
+schluss_text_ohne: "Bis die Füße streiken oder der Akku."
+
+nebenwirkungen: "Mögliche Nebenwirkungen: Lächeln, Schweiß, spontane überschwängliche Glücksmomente."
+
+button_kommen: "Ich komme!"
+button_bei: "bei"
+
+# Dank an den Veranstalter. {veranstalter} wird durch den Namen ersetzt.
+dank: "Veranstaltet von {veranstalter}. Ein herzliches Dankeschön für die Einladung und euer Engagement! Mehr zum Abend gibt es auch [[auf der Seite des Veranstalters]]."
+dank_ohne_link: "Veranstaltet von {veranstalter}. Ein herzliches Dankeschön für die Einladung und euer Engagement!"
+
+eintritt:
+  vorverkauf: "Tickets gibt es im Vorverkauf."
+  vorverkauf_abendkasse: "Tickets gibt es im Vorverkauf und an der Abendkasse."
+  abendkasse: "Tickets gibt es nur direkt vor Ort an der Abendkasse."
+  frei: "Eintritt frei. Spenden für die Musiker*innen sind willkommen."
+  offen: "Der Ticketlink folgt. Wer Bescheid bekommen möchte, [[schreibt uns kurz]]."
+
+status:
+  ausverkauft:
+    badge: "Ausverkauft"
+    text: "Dieser Abend ist leider ausverkauft. Wer beim nächsten Mal sicher dabei sein will, [[schreibt uns kurz]]."
+  abgesagt:
+    badge: "Abgesagt"
+    text: "Dieser Abend findet leider nicht statt. Sobald es einen neuen Termin gibt, sagen wir es hier."
+
+# Erklärseiten hinter "Okay, ich komme.", wenn es keinen Ticketlink gibt
+dabei_zurueck: "Zurück zum Abend"
+dabei:
+  abendkasse:
+    titel: "Keine Tickets im Voraus? Genau so ist es."
+    absaetze:
+      - "Für diesen Abend gibt es keinen Vorverkauf. Das ist kein Versehen, sondern Absicht: Du kommst einfach vorbei, und die Tickets gibt es direkt vor Ort an der Abendkasse."
+      - "Damit der Abend mit Tanzen beginnt und nicht mit Warten, komm am besten etwas früher. Bargeld ist an Abendkassen im Zweifel die sicherste Wahl. Und die bequemen Schuhe nimmst du am besten gleich mit."
+      - "Preis und Einlass stehen auf der Seite des Abends im Abschnitt „Kurz und knapp“. Wir freuen uns auf dich."
+  frei:
+    titel: "Eintritt frei. Wirklich."
+    absaetze:
+      - "Für diesen Abend brauchst du kein Ticket, denn es gibt weder Vorverkauf noch Abendkasse. Du musst nirgends klicken, nichts buchen und kein Formular ausfüllen. Einfach kommen und tanzen."
+      - "Wenn du den Musiker*innen etwas Gutes tun möchtest: Spenden sind willkommen. Pflicht ist das nicht, nur ein sehr freundlicher Gedanke."
+      - "Alles Weitere zu Ort und Uhrzeit steht auf der Seite des Abends. Wir freuen uns auf dich."
+  offen:
+    titel: "Der Ticketlink ist noch unterwegs."
+    absaetze:
+      - "Für diesen Abend gibt es noch keinen Ticketlink. Sobald der Vorverkauf startet, steht er hier auf der Seite des Abends, versprochen."
+      - "Wer nichts verpassen möchte, [[schreibt uns kurz]], dann geben wir Bescheid. Bis dahin: Termin schon mal im Kalender freihalten und die Tanzschuhe polieren."
+
+ics_link: "Zum Kalender hinzufügen"
+
+foto_vorab: "An dem Abend werden Fotos gemacht. Wer nicht abgebildet werden möchte, [[sagt uns einfach Bescheid]]. Mehr dazu in der ((Datenschutzerklärung))."
+foto_nachher: "Auf den Fotos sind Gäste des Abends zu sehen. Wer nicht abgebildet sein möchte, [[schreibt uns kurz]], dann nehmen wir das Bild heraus. Mehr dazu in der ((Datenschutzerklärung))."
+foto_credit: "Fotos:"
+
+archiv_titel: "Schon geswungen"
+person_dabei: "Dabei bei Swing zu Hauf"
+
+labels:
+  zu_beginn: "Zu Beginn"
+  danach: "Danach"
+  tanzkurs: "Tanzkurs"
+  live_musik: "Live-Musik"
+  musik_ohne: "Musik"
+  extra_zeit: "Zwischendurch"
+  extra_titel: "Extra"
+  schluss_zeit: "Bis zum Schluss"
+  schluss_titel: "Tanzen"
+  infos_titel: "Kurz und knapp"
+  veranstalter: "Veranstalter"
+  ort: "Ort"
+  einlass: "Einlass"
+  tickets: "Tickets"
+  ticket_link: "Zum Vorverkauf"
+  preis: "Preis"
+  uhr: "Uhr"
+  karte: "Auf der Karte ansehen"
+  besetzung_titel: "Die Besetzung"
+  band: "Band:"
+  plakat_link: "Plakat in groß ansehen"
+  eindruecke: "Eindrücke"
+  website: "Website"

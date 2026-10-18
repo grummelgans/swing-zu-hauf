@@ -1,0 +1,8 @@
+# Ein Eintrag pro Veranstalter. Der Schlüssel steht im Event bei "veranstalter:".
+ikuh-pfullingen:
+  name: iKuh Pfullingen e. V.
+  link: https://ikuh-pfullingen.de
+
+swing-zu-hauf:
+  name: Swing zu Hauf
+  dank: false          # sich selbst danken wir nicht

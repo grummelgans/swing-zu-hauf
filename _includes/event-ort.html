@@ -1,0 +1,22 @@
+{%- comment -%}
+Löst den Ort eines Events auf (Stammdaten oder freier Text).
+Parameter: e. Setzt: ort_name (genau), ort_kurz (kurz und knapp), ort_adresse, ort_maps, ort_suche.
+{%- endcomment -%}
+{%- assign ort_name = include.e.ort -%}
+{%- assign ort_kurz = include.e.ort -%}
+{%- assign ort_adresse = nil -%}
+{%- assign ort_maps = nil -%}
+{%- assign ort_suche = nil -%}
+{%- assign ort_doc = site.data.orte[include.e.ort] -%}
+{%- if ort_doc -%}
+  {%- assign ort_name = ort_doc.name -%}
+  {%- assign ort_kurz = ort_doc.kurz | default: ort_doc.name -%}
+  {%- assign ort_adresse = ort_doc.adresse -%}
+  {%- assign ort_maps = ort_doc.maps -%}
+{%- endif -%}
+{%- if ort_name -%}
+  {%- capture ort_suche -%}{{ ort_name }}{% if ort_adresse %}, {{ ort_adresse }}{% endif %}{%- endcapture -%}
+  {%- if ort_maps == blank -%}
+    {%- assign ort_maps = ort_suche | url_encode | prepend: 'https://www.google.com/maps/search/?api=1&amp;query=' -%}
+  {%- endif -%}
+{%- endif -%}
