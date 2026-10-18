@@ -5,10 +5,10 @@ lang: de
 timezone: Europe/Berlin
 
 # Später die echte Domain eintragen, z. B. https://swing-zu-hauf.eu
-url: "https://grummelgans.github.io"
+url: "https://jlhauf.eu"
 # Bei einer Projektseite auf GitHub (nutzername.github.io/repo) hier "/repo" eintragen.
 # Bei eigener Domain oder nutzername.github.io leer lassen.
-baseurl: "/swing-zu-hauf"
+baseurl: ""
 
 # Kontakt (Namen der Brüder stehen jetzt in _data/texte.yml und _personen/)
 email: jlhauf.info@gmail.com
